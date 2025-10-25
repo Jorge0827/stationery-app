@@ -1,0 +1,8 @@
+### Mostrar Todos los roles
+GET http://localhost:8081/api/roles
+
+### Mostrar por Id válido
+GET http://localhost:8081/api/roles/2
+
+### Mostrar por Id inexistente
+GET http://localhost:8081/api/roles/999
