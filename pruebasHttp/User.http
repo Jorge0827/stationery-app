@@ -1,0 +1,33 @@
+###
+GET http://localhost:8081/api/users
+
+###
+POST http://localhost:8081/api/users/create
+Content-Type: application/json
+
+{
+    "userName": "andresPardo27",
+    "email": "pardo27@gmail.com",
+    "password": "pardo2026",
+    "idRol": 2
+
+}
+
+###
+PUT http://localhost:8081/api/users/1
+Content-Type: application/json
+
+{
+    "userName": "Claudia Yaned Echavarría",
+    "email": "claudiaecp@gmail.com",
+    "password": "123456",
+    "idRol": 1
+
+}
+
+###
+DELETE http://localhost:8081/api/users/3
+
+
+
+
