@@ -1,0 +1,33 @@
+### Mostrar todos los proveedores
+GET http://localhost:8081/api/suppliers
+
+### Crear, añadir o agrgear un nuevo proveedor
+POST http://localhost:8081/api/suppliers
+Content-Type: application/json
+
+{
+    "name": "Bimbo",
+    "prefix": "+57",
+    "phoneNumber": "3145874248",
+    "email": "bimbo12@gmail.com",
+    "addres": "Cr 75 Nro 47 -9 Medellin ",
+    "nit": "9478562104"
+
+}
+
+### Modificar un proveedor
+PUT http://localhost:8081/api/suppliers/7
+Content-Type: application/json
+
+{
+    "name": "FritoLay",
+    "prefix": "+57",
+    "phoneNumber": "3124587948",
+    "email": "fritolay@gmail.com",
+    "addres": "Cr 55 #87 - 35 Medellin sector la candelaria ",
+    "nit": "900147895"
+
+}
+
+### Elminar proveedor
+DELETE http://localhost:8081/api/suppliers/8
