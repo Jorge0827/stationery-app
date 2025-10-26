@@ -8,6 +8,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import com.jechavarria.stationery_app.exceptions.EmailAlreadyExistsException;
 import com.jechavarria.stationery_app.exceptions.IdNotFoundException;
+import com.jechavarria.stationery_app.exceptions.NitAlreadyExistsException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +41,32 @@ public class GlobalExceptionHandler {
         request.getRequestURI());
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    @ExceptionHandler(NitAlreadyExistsException.class)
+    public ResponseEntity<ApiErrorResponse> handleNitAlreadyExists(NitAlreadyExistsException ex, HttpServletRequest request){
+        ApiErrorResponse error = new ApiErrorResponse(
+        HttpStatus.CONFLICT,
+        ex.getMessage(), 
+        request.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+}
+
+@ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiErrorResponse> handleGenericException(
+            Exception ex, WebRequest request) {
+        
+        log.error("Error interno del servidor", ex);
+        
+        String path = request.getDescription(false).replace("uri=", "");
+        ApiErrorResponse errorResponse = new ApiErrorResponse(
+            HttpStatus.INTERNAL_SERVER_ERROR, 
+            "Ha ocurrido un error inesperado", 
+            path
+        );
+        
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
