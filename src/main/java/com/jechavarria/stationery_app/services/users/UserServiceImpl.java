@@ -2,21 +2,16 @@ package com.jechavarria.stationery_app.services.users;
 
 import java.util.List;
 
-import javax.management.relation.RoleNotFoundException;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jechavarria.stationery_app.exceptions.EmailAlreadyExistsException;
 import com.jechavarria.stationery_app.exceptions.IdNotFoundException;
-import com.jechavarria.stationery_app.models.dtos.dtoRoles.RoleResponse;
 import com.jechavarria.stationery_app.models.dtos.dtoUsers.UserRequest;
 import com.jechavarria.stationery_app.models.dtos.dtoUsers.UserResponse;
 import com.jechavarria.stationery_app.models.mappers.UserMapper;
 import com.jechavarria.stationery_app.repository.roles.RoleRepository;
 import com.jechavarria.stationery_app.repository.users.UserRepository;
-import com.jechavarria.stationery_app.services.roles.RoleService;
-import com.jechavarria.stationery_app.services.roles.RoleServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 
