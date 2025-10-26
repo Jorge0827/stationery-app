@@ -1,0 +1,32 @@
+### Mostar o buscar todos los productos
+
+GET http://localhost:8081/api/products 
+
+### Crear un nuevo producto
+POST http://localhost:8081/api/products
+Content-Type: application/json
+
+{
+
+    "id": "CUA1",
+    "name": "Cuaderno Rallado 100 hojas",
+    "description": " ",
+    "unitPrice": "3000.0",
+    "currentStock": "20"
+
+}
+
+### Actualizar producto
+PUT http://localhost:8081/api/products/CUA1
+Content-Type: application/json
+
+{
+    "id": "CUA1",
+    "name": "Cuaderno Rallado 100 hojas",
+    "description": "Cuaderno cosido etc-----",
+    "unitPrice": "9000.0",
+    "currentStock": "12"
+}
+
+### Eliminar producto
+DELETE http://localhost:8081/api/products/CUA1
