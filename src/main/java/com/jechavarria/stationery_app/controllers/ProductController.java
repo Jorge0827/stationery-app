@@ -17,6 +17,8 @@ import com.jechavarria.stationery_app.models.dtos.dtoProducts.ProductRequest;
 import com.jechavarria.stationery_app.models.dtos.dtoProducts.ProductResponse;
 import com.jechavarria.stationery_app.services.Products.ProductService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
@@ -34,7 +36,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponse> create(@RequestBody ProductRequest data) {
+    public ResponseEntity<ProductResponse> create(@Valid @RequestBody ProductRequest data) {
         var newProduct = productService.create(data);
         
         return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);

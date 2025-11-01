@@ -1,0 +1,28 @@
+###
+GET http://localhost:8081/api/purchases
+
+
+###
+POST http://localhost:8081/api/purchases
+Content-Type: application/json
+
+{
+    "date": "2025-10-29",
+    "total": "2300500",
+    "supplier": 9,
+    "user": 2
+}
+
+###
+PUT  http://localhost:8081/api/purchases/1
+Content-Type: application/json
+
+{
+    "date": "2025-10-30",
+    "total": "300000",
+    "supplier": 9,
+    "user": 2
+}
+
+###
+DELETE http://localhost:8081/api/purchases/
