@@ -1,0 +1,27 @@
+###
+GET http://localhost:8081/api/salesDetails
+
+###
+POST http://localhost:8081/api/salesDetails
+Content-Type:  application/json
+
+{
+    "idSale": 2,
+    "idProduct": "Torta01",
+    "quantity": 5,
+    "unitPrice": 80000
+}
+
+###
+PUT  http://localhost:8081/api/salesDetails/2/Torta01
+Content-Type:  application/json
+
+{
+    "idSale": 2,
+    "idProduct": "Torta01",
+    "quantity": 20,
+    "unitPrice": 230000.0
+}
+
+###
+DELETE http://localhost:8081/api/salesDetails/2/Torta01
