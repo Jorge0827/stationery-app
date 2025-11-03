@@ -1,0 +1,25 @@
+###
+GET http://localhost:8081/api/sales
+
+###
+POST http://localhost:8081/api/sales
+Content-Type: application/json
+
+{
+    "salesDate": "2025-09-25",
+    "total": "1000",
+    "user": 2
+}
+
+###
+PUT http://localhost:8081/api/sales/1
+Content-Type: application/json
+
+{
+    "salesDate": "2025-10-15",
+    "total": "600000",
+    "user": 1
+}
+
+###
+DELETE http://localhost:8081/api/sales/1
