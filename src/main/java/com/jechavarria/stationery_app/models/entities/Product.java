@@ -1,10 +1,12 @@
 package com.jechavarria.stationery_app.models.entities;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,5 +34,8 @@ public class Product {
 
     @Column(name = "current_stock", nullable = false)
     private Integer currentStock;
+
+    @OneToMany(mappedBy = "product")
+    private List<PurchaseDetail> purchaseDetails;
 
 }
