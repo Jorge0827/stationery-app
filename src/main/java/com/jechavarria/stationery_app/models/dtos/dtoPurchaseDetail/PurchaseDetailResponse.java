@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class PurchaseDetailResponse {
 
-    private String purchase;
+    private Integer idPurchase;
 
     private String product;
 
