@@ -1,8 +1,11 @@
 ###
 GET http://localhost:8081/api/sales
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiSU5WSVRBRE8iLCJuYW1lIjoianVsb3ZpMjciLCJzdWIiOiJqdWxvdmkyNyIsImlhdCI6MTc2MjczMTEwNCwiZXhwIjoxNzYyNzMxNDA0fQ.DvQL_b0u_sib3_74ELh9-0_NVsmdSTtswim1xRZae30
+Accept: application/json
 
 ###
 POST http://localhost:8081/api/sales
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU5JU1RSQURPUiIsIm5hbWUiOiJhZG1pbnBhcGVsMDEiLCJzdWIiOiJhZG1pbnBhcGVsMDEiLCJpYXQiOjE3NjI3MzEyNjksImV4cCI6MTc2MjczMTU2OX0.uTcSUjC_ochroSwI9Pz30qB_LtvQpObEyj2-vtFdYS0
 Content-Type: application/json
 
 {

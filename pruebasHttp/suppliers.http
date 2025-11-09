@@ -1,5 +1,7 @@
 ### Mostrar todos los proveedores
 GET http://localhost:8081/api/suppliers
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU5JU1RSQURPUiIsIm5hbWUiOiJhZG1pbnBhcGVsMDEiLCJzdWIiOiJhZG1pbnBhcGVsMDEiLCJpYXQiOjE3NjI3MzA5NzEsImV4cCI6MTc2MjczMTI3MX0.0ifwG91p6QovXJBP83kbxGENuJRW8ykEIFM5qIS1k6U
+Accept: application/json
 
 ### Crear, añadir o agrgear un nuevo proveedor
 POST http://localhost:8081/api/suppliers

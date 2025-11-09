@@ -35,11 +35,21 @@ public class SecurityConfiguration {
 
         // Si el token está continue, sino vaya al userPassword
 
-        http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/api/auth/**")
-                        .permitAll()
-                        .anyRequest().authenticated())
+    http.csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(authz -> authz
+            // Allow unauthenticated access to authentication endpoints
+            .requestMatchers("/api/auth/**").permitAll()
+            // Allow OpenAPI / Swagger UI endpoints
+            .requestMatchers(
+                "/v3/api-docs/**",
+                "/v3/api-docs.yaml",
+                "/swagger-ui/**",
+                "/swagger-ui.html",
+                "/swagger-ui/index.html",
+                "/swagger-ui/index.html/**",
+                "/webjars/**"
+            ).permitAll()
+            .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
