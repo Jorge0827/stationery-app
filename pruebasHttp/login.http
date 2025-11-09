@@ -1,0 +1,17 @@
+### Login correcto
+POST http://localhost:8081/api/auth/login
+Content-Type: application/json
+
+{
+    "username": "jechavarria27",
+    "password": "jjp085401"
+}
+
+### Login correcto
+POST http://localhost:8081/api/auth/login
+Content-Type: application/json
+
+{
+    "username": "adminpapel01",
+    "password": "admin123"
+}

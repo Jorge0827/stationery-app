@@ -1,31 +1,56 @@
 ###
 GET http://localhost:8081/api/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU5JU1RSQURPUiIsIm5hbWUiOiJhZG1pbnBhcGVsMDEiLCJzdWIiOiJhZG1pbnBhcGVsMDEiLCJpYXQiOjE3NjI3Mjg2OTQsImV4cCI6MTc2MjcyODk5NH0.7gChrgtQRcpZPWMbj9yJT6vhPmEogyob27jOOJVM_gg
+Accept: application/json
 
-###
-POST http://localhost:8081/api/users/create
+### Crear registros
+POST http://localhost:8081/api/auth/register
 Content-Type: application/json
 
 {
-    "userName": "andresPardo27",
-    "email": "pardo27@gmail.com",
-    "password": "pardo2026",
+    "userName": "jechavarria27",
+    "email": "jechava01@gmail.com",
+    "password": "jjp085401",
     "idRol": 2
 }
 
-###
-PUT http://localhost:8081/api/users/1
+### Crear registros
+POST http://localhost:8081/api/auth/register
 Content-Type: application/json
 
 {
-    "userName": "Claudia Yaned Echavarría",
-    "email": "claudiaecp@gmail.com",
-    "password": "123456",
+    "userName": "jj0827",
+    "email": "08257@gmail.com",
+    "password": "jorge0124",
+    "idRol": 3
+}
+
+### Crear registros
+POST http://localhost:8081/api/auth/register
+Content-Type: application/json
+
+{
+    "userName": "adminpapel01",
+    "email": "admin01@gmail.com",
+    "password": "admin123",
     "idRol": 1
+}
+
+###
+POST  http://localhost:8081/api/auth/register
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiYWRtaW5wYXBlbDAxIiwicm9sZSI6IkFETUlOSVNUUkFET1IiLCJzdWIiOiJhZG1pbnBhcGVsMDEiLCJpYXQiOjE3NjI3MjkwNDQsImV4cCI6MTc2MjcyOTM0NH0.-J7mK639zuXBRGp6Dx7ZqD2_a68DP8_tUCf07I3rNcA
+Content-Type: application/json
+
+{
+    "userName": "JuanPablo00",
+    "email": "pablo01@gmail.com",
+    "password": "jpablo0870",
+    "idRol": 3
 
 }
 
 ###
-DELETE http://localhost:8081/api/users/3
+DELETE http://localhost:8081/api/users/2
 
 
 

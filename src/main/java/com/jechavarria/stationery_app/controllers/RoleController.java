@@ -3,6 +3,7 @@ package com.jechavarria.stationery_app.controllers;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,12 +22,14 @@ public class RoleController {
             this.roleService = roleService;
         }
 
+        @PreAuthorize("isAuthenticated()")
         @GetMapping
         public ResponseEntity<List<RoleResponse>> getAllRoles() {
             List<RoleResponse> roles = roleService.getAll();
             return ResponseEntity.ok(roles);
         }
 
+        @PreAuthorize("isAuthenticated()")
         @GetMapping("/{id}")
         public ResponseEntity<RoleResponse> getById(@PathVariable Integer id) {
             RoleResponse rol = roleService.getById(id);

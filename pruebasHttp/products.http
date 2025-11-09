@@ -1,9 +1,12 @@
 ### Mostar o buscar todos los productos
 
-GET http://localhost:8081/api/products 
+GET http://localhost:8081/api/products
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbnBhcGVsMDEiLCJpYXQiOjE3NjI3MTkzODgsImV4cCI6MTc2MjcxOTY4OH0.6ZL5ZCwgiafTLaWVh4SIBqQlNMSSb_xoJTswlr6syLM
+Accept: application/json 
 
 ### Crear un nuevo producto
 POST http://localhost:8081/api/products
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbnBhcGVsMDEiLCJpYXQiOjE3NjI3MTkzODgsImV4cCI6MTc2MjcxOTY4OH0.6ZL5ZCwgiafTLaWVh4SIBqQlNMSSb_xoJTswlr6syLM
 Content-Type: application/json
 
 {

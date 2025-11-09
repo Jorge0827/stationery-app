@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,6 +37,7 @@ public class PurchaseDetailController {
         return ResponseEntity.ok(details);
     }
 
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     @PostMapping
     public ResponseEntity<PurchaseDetailResponse> create(@Valid @RequestBody PurchaseDetailRequest data) {
 
@@ -44,6 +46,7 @@ public class PurchaseDetailController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newDetail);
     }
 
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     @PutMapping("/{idPurchase}/{idProduct}")
     public ResponseEntity<PurchaseDetailResponse> update(
             @PathVariable Integer idPurchase, @PathVariable String idProduct,
@@ -54,6 +57,7 @@ public class PurchaseDetailController {
         return ResponseEntity.ok(updateDetail);
     }
 
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     @DeleteMapping("/{idPurchase}/{idProduct}")
     public ResponseEntity<PurchaseDetailResponse> delete(
             @PathVariable Integer idPurchase, @Valid @PathVariable String idProduct) {

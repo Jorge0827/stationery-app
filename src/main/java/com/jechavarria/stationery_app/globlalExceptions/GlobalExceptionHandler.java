@@ -2,14 +2,17 @@ package com.jechavarria.stationery_app.globlalExceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
+import com.jechavarria.stationery_app.exceptions.BadLoginException;
 import com.jechavarria.stationery_app.exceptions.EmailAlreadyExistsException;
 import com.jechavarria.stationery_app.exceptions.IdNotFoundException;
 import com.jechavarria.stationery_app.exceptions.NitAlreadyExistsException;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
@@ -68,5 +71,37 @@ public class GlobalExceptionHandler {
         
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(BadLoginException.class)
+    public ResponseEntity<ApiErrorResponse> handleBadLoginException(BadLoginException ex, HttpServletRequest request){
+        var response = new ApiErrorResponse(
+            HttpStatus.UNAUTHORIZED,
+            "Credenciales incorrectas",
+            request.getRequestURI());
+
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ApiErrorResponse> handleAuthenticationException(AuthenticationException ex, HttpServletRequest request){
+        var response = new ApiErrorResponse(
+            HttpStatus.UNAUTHORIZED,
+            "Credenciales incorrectas",
+            request.getRequestURI());
+
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+
+}
+
+@ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<ApiErrorResponse> handleExpiredJwtException(ExpiredJwtException ex, HttpServletRequest request){
+        var response = new ApiErrorResponse(
+            HttpStatus.FORBIDDEN,
+            "Ha expirado el token, genera uno nuevo",
+            request.getRequestURI());
+
+            return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+
+}
 
 }

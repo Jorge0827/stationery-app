@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,12 +33,14 @@ public class PurchaseController {
         this.purchaseService = purchaseService;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping
     public ResponseEntity<List<PurchaseResponse>> getAll() {
         var purchases = purchaseService.getAll();
         return ResponseEntity.ok(purchases);
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'EMPLEADO')")
     @PostMapping
     public ResponseEntity<PurchaseResponse> create(@Valid @RequestBody PurchaseRequest data) {
         var createPurchase = purchaseService.create(data);
@@ -46,6 +49,7 @@ public class PurchaseController {
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'EMPLEADO')")
     @PutMapping("/{id}")
     public ResponseEntity<PurchaseResponse> update(@PathVariable Integer id, @Valid @RequestBody PurchaseRequest data) {
         var updatePurchase = purchaseService.update(id, data);
@@ -53,6 +57,7 @@ public class PurchaseController {
         return ResponseEntity.ok(updatePurchase);
     }
 
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     @DeleteMapping("/{id}")
     public ResponseEntity<PurchaseResponse> delete(@Valid @PathVariable Integer id) {
         var deletePurchase = purchaseService.delete(id);

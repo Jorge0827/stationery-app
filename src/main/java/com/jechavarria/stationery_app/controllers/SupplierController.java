@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,12 +30,14 @@ private final SupplierService supplierService;
         this.supplierService = supplierService;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping
     public ResponseEntity<List<SupplierResponse>> getAll() {
         var suppliers = supplierService.getAll();
         return ResponseEntity.ok(suppliers);
     }
 
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     @PostMapping
     public ResponseEntity<SupplierResponse> create(@Valid @RequestBody SupplierRequest data) {
         
@@ -43,11 +46,13 @@ private final SupplierService supplierService;
         return ResponseEntity.status(HttpStatus.CREATED).body(createSupplier);
     }
 
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     @PutMapping("/{id}")
     public SupplierResponse update(@PathVariable Integer id, @RequestBody SupplierRequest entity) {
         return supplierService.update(id, entity);
     }
 
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     @DeleteMapping("/{id}")
     public SupplierResponse delete(@PathVariable Integer id){
         return supplierService.delete(id);

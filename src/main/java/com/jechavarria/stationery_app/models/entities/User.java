@@ -30,7 +30,7 @@ public class User {
     @Column(nullable = false, unique = true) //No puede hacer dos usuario con el mismo email
     private String email;
 
-    @Column(nullable = false, length = 25)
+    @Column(length = 255, nullable = false)
     private String password;
 
     @ManyToOne

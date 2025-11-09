@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +30,7 @@ public class SaleController {
         this.saleService = saleService;
     }
 
-
+    @PreAuthorize("isAuthenticated()")
     @GetMapping
     public ResponseEntity<List<SalesResponse>> getAll() {
 
@@ -37,6 +38,7 @@ public class SaleController {
         return ResponseEntity.ok(sales);
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'EMPLEADO')")
     @PostMapping
     public ResponseEntity<SalesResponse> create(@Valid @RequestBody SalesRequest data) {
         
@@ -45,6 +47,7 @@ public class SaleController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newSale);
     }
 
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     @PutMapping("/{id}")
     public ResponseEntity<SalesResponse> update(@PathVariable Integer id, @Valid @RequestBody SalesRequest data) {
         var updateSale = saleService.update(id, data);
@@ -52,6 +55,7 @@ public class SaleController {
         return ResponseEntity.ok(updateSale);
     }
 
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     @DeleteMapping("/{id}")
     public ResponseEntity<SalesResponse> delete(@Valid @PathVariable Integer id) {
         var deleteSale = saleService.delete(id);
