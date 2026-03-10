@@ -1,5 +1,6 @@
 package com.jechavarria.stationery_app.services.Purchases;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.jechavarria.stationery_app.models.dtos.dtoPurchases.PurchaseRequest;
@@ -14,6 +15,10 @@ public interface PurchaseService {
     PurchaseResponse update(Integer id, PurchaseRequest data);
 
     PurchaseResponse delete(Integer id);
+
+    List<PurchaseResponse> getByDateRange(LocalDate startDate, LocalDate endDate);
+
+    List<PurchaseResponse> getBySupplier(Integer supplierId);
 
 
 }

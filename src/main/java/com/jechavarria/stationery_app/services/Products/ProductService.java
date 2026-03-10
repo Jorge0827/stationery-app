@@ -15,4 +15,8 @@ public interface ProductService {
 
     void delete(String id);
 
+    List<ProductResponse> getLowStock(Integer threshold);
+
+    List<ProductResponse> getAllOrderByStockAsc();
+
 }

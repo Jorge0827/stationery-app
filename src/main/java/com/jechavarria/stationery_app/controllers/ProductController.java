@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jechavarria.stationery_app.models.dtos.dtoProducts.ProductRequest;
@@ -34,6 +35,21 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<ProductResponse>> getAll() {
         var products = productService.getAll();
+        return ResponseEntity.ok(products);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/low-stock")
+    public ResponseEntity<List<ProductResponse>> getLowStock(
+            @RequestParam(name = "threshold", required = false) Integer threshold) {
+        var products = productService.getLowStock(threshold);
+        return ResponseEntity.ok(products);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/by-stock-asc")
+    public ResponseEntity<List<ProductResponse>> getAllOrderByStockAsc() {
+        var products = productService.getAllOrderByStockAsc();
         return ResponseEntity.ok(products);
     }
 

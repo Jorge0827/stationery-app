@@ -1,5 +1,6 @@
 package com.jechavarria.stationery_app.services.Purchases;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -52,17 +53,14 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     public PurchaseResponse create(PurchaseRequest data) {
-        // Verificar existencia de proveedor
         log.info("verificando exitencia de proveedor");
         var existingSupplier = supplierRepository.findById(data.getIdSupplier())
                 .orElseThrow(() -> new IdNotFoundException("Proveedor no encontrado" + data.getIdSupplier()));
 
-        // Verificar existencia del ID
         log.info("Verificando existencia de Usuario");
         var existingUser = userRepository.findById(data.getIdUser())
                 .orElseThrow(() -> new IdNotFoundException("Usuario no encontrado" + data.getIdUser()));
 
-        // Mappear
         var newPurchase = purchaseMapper.toEntity(data);
 
         newPurchase.setSupplier(existingSupplier);
@@ -80,12 +78,10 @@ public class PurchaseServiceImpl implements PurchaseService {
         var existingId = purchaseRepository.findById(id)
                 .orElseThrow(() -> new IdNotFoundException("La compra con id " + id + " No existe"));
 
-        // Verificar existencia de proveedor
         log.info("verificando exitencia de proveedor");
         var existingSupplier = supplierRepository.findById(data.getIdSupplier())
                 .orElseThrow(() -> new IdNotFoundException("Proveedor no encontrado" + data.getIdSupplier()));
 
-        // Verificar existencia del ID
         log.info("Verificando existencia de Usuario");
         var existingUser = userRepository.findById(data.getIdUser())
                 .orElseThrow(() -> new IdNotFoundException("Usuario no encontrado" + data.getIdUser()));
@@ -110,6 +106,30 @@ public class PurchaseServiceImpl implements PurchaseService {
         purchaseRepository.delete(existingId);
         return purchaseMapper.toResponse(existingId);
 
+    }
+
+    @Override
+    public List<PurchaseResponse> getByDateRange(LocalDate startDate, LocalDate endDate) {
+        log.info("Consultando compras entre {} y {}", startDate, endDate);
+
+        var purchases = purchaseRepository.findByDatePruchaseBetween(startDate, endDate).stream()
+                .map(purchaseMapper::toResponse)
+                .toList();
+
+        log.info("Compras encontradas en rango: {}", purchases.size());
+        return purchases;
+    }
+
+    @Override
+    public List<PurchaseResponse> getBySupplier(Integer supplierId) {
+        log.info("Consultando compras del proveedor con id {}", supplierId);
+
+        var purchases = purchaseRepository.findBySupplierId(supplierId).stream()
+                .map(purchaseMapper::toResponse)
+                .toList();
+
+        log.info("Compras encontradas para proveedor {}: {}", supplierId, purchases.size());
+        return purchases;
     }
 
 }

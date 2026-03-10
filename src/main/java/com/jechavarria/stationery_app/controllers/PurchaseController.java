@@ -1,5 +1,6 @@
 package com.jechavarria.stationery_app.controllers;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.jechavarria.stationery_app.models.dtos.dtoPurchases.PurchaseRequest;
 import com.jechavarria.stationery_app.models.dtos.dtoPurchases.PurchaseResponse;
@@ -37,6 +41,22 @@ public class PurchaseController {
     @GetMapping
     public ResponseEntity<List<PurchaseResponse>> getAll() {
         var purchases = purchaseService.getAll();
+        return ResponseEntity.ok(purchases);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/by-date")
+    public ResponseEntity<List<PurchaseResponse>> getByDateRange(
+            @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+            @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) {
+        var purchases = purchaseService.getByDateRange(start, end);
+        return ResponseEntity.ok(purchases);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/by-supplier/{supplierId}")
+    public ResponseEntity<List<PurchaseResponse>> getBySupplier(@PathVariable Integer supplierId) {
+        var purchases = purchaseService.getBySupplier(supplierId);
         return ResponseEntity.ok(purchases);
     }
 

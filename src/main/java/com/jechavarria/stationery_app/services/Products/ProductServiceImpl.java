@@ -115,4 +115,30 @@ public class ProductServiceImpl implements ProductService {
         
     }
 
+    @Override
+    public List<ProductResponse> getLowStock(Integer threshold) {
+        int value = (threshold != null && threshold > 0) ? threshold : 10;
+
+        log.info("Buscando productos con stock menor o igual a {}", value);
+
+        var products = productRepository.findByCurrentStockLessThanEqualOrderByCurrentStockAsc(value).stream()
+                .map(productMapper::toResponse)
+                .toList();
+
+        log.info("Productos con bajo stock encontrados: {}", products.size());
+        return products;
+    }
+
+    @Override
+    public List<ProductResponse> getAllOrderByStockAsc() {
+        log.info("Buscando todos los productos ordenados por stock ascendente");
+
+        var products = productRepository.findAllByOrderByCurrentStockAsc().stream()
+                .map(productMapper::toResponse)
+                .toList();
+
+        log.info("Productos encontrados: {}", products.size());
+        return products;
+    }
+
 }
