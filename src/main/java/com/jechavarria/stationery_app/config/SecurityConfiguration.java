@@ -12,6 +12,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity // Aquí se dará la seguridad
@@ -28,26 +31,25 @@ public class SecurityConfiguration {
     SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter authenticationFilter)
             throws Exception {
 
-        // Se agregó un nuevo filtro, antes de hacer la verficación de usuario y
-        // cvontraseña
-
-        // Si el token está continue, sino vaya al userPassword
-
-    http.csrf(csrf -> csrf.disable())
-        .authorizeHttpRequests(authz -> authz
-            // Allow unauthenticated access to authentication endpoints
-            .requestMatchers("/api/auth/**").permitAll()
-            // Allow OpenAPI / Swagger UI endpoints
-            .requestMatchers(
-                "/v3/api-docs/**",
-                "/v3/api-docs.yaml",
-                "/swagger-ui/**",
-                "/swagger-ui.html",
-                "/swagger-ui/index.html",
-                "/swagger-ui/index.html/**",
-                "/webjars/**"
-            ).permitAll()
-            .anyRequest().authenticated())
+        http
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .authorizeHttpRequests(authz -> authz
+                        // Allow unauthenticated access to authentication endpoints
+                        .requestMatchers("/api/auth/**").permitAll()
+                        // Allow reading roles for public signup
+                        .requestMatchers("/api/roles/**").permitAll()
+                        // Allow OpenAPI / Swagger UI endpoints
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/v3/api-docs.yaml",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/swagger-ui/index.html",
+                                "/swagger-ui/index.html/**",
+                                "/webjars/**")
+                        .permitAll()
+                        .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -57,6 +59,19 @@ public class SecurityConfiguration {
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("http://localhost:5173");
+        configuration.addAllowedMethod("*");
+        configuration.addAllowedHeader("*");
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
 }

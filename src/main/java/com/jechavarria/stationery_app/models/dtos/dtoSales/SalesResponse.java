@@ -13,4 +13,6 @@ public class SalesResponse {
     private BigDecimal total;
     private String user;
 
+    private String notes;
+
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jechavarria.stationery_app.models.dtos.dtoLogin.LoginRequest;
 import com.jechavarria.stationery_app.models.dtos.dtoLogin.LoginResponse;
+import com.jechavarria.stationery_app.models.dtos.dtoUsers.PublicRegisterRequest;
 import com.jechavarria.stationery_app.models.dtos.dtoUsers.UserRequest;
 import com.jechavarria.stationery_app.models.dtos.dtoUsers.UserResponse;
 import com.jechavarria.stationery_app.services.users.UserService;
@@ -52,6 +53,12 @@ public class UserController {
     @PostMapping("auth/login")
     public LoginResponse Login (@Valid @RequestBody LoginRequest body){
         return userService.login(body);
+    }
+
+    @PostMapping("auth/signup")
+    public ResponseEntity<UserResponse> publicSignup(@Valid @RequestBody PublicRegisterRequest data) {
+        var user = userService.publicRegister(data);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
     @PreAuthorize("hasRole('ADMINISTRADOR')")

@@ -10,8 +10,8 @@ public class PurchaseResponse {
     private Integer id;
     private LocalDate date;
     private BigDecimal total;
-    private String Supplier;
-    private String User;
+    private String supplier;
+    private String user;
 
 
 }

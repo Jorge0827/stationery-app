@@ -34,7 +34,13 @@ public class SaleDetailController {
     @GetMapping
     public ResponseEntity<List<SaleDetailResponse>> getAll() {
         var details = saleDetailService.getAllSales();
+        return ResponseEntity.ok(details);
+    }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/bySale/{idSale}")
+    public ResponseEntity<List<SaleDetailResponse>> getBySale(@PathVariable Integer idSale) {
+        var details = saleDetailService.getDetailsBySaleId(idSale);
         return ResponseEntity.ok(details);
     }
 

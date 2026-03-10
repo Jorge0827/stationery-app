@@ -9,6 +9,8 @@ public interface PurchaseDetailService {
 
     List<PurchaseDetailResponse> getAllDetails();
 
+    List<PurchaseDetailResponse> getDetailsByPurchaseId(Integer purchaseId);
+
     PurchaseDetailResponse create(PurchaseDetailRequest data);
 
     PurchaseDetailResponse update(Integer idPurchase, String IdProduct, PurchaseDetailRequest data);

@@ -9,6 +9,8 @@ public interface SaleDetailService {
 
     List<SaleDetailResponse> getAllSales();
 
+    List<SaleDetailResponse> getDetailsBySaleId(Integer saleId);
+
     SaleDetailResponse create(SaleDetailRequest data);
 
     SaleDetailResponse update(Integer idSale, String idProduct, SaleDetailRequest data);

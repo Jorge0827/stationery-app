@@ -2,6 +2,8 @@ package com.jechavarria.stationery_app.globlalExceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -56,7 +58,21 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
 }
 
-@ExceptionHandler(Exception.class)
+    @ExceptionHandler({AccessDeniedException.class, AuthorizationDeniedException.class})
+    public ResponseEntity<ApiErrorResponse> handleAccessDeniedException(
+            RuntimeException ex, HttpServletRequest request) {
+
+        log.warn("Acceso denegado: {}", ex.getMessage());
+
+        ApiErrorResponse errorResponse = new ApiErrorResponse(
+                HttpStatus.FORBIDDEN,
+                "No tienes permisos para realizar esta acción",
+                request.getRequestURI());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorResponse> handleGenericException(
             Exception ex, WebRequest request) {
         

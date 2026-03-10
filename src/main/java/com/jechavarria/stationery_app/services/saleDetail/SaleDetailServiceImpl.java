@@ -50,6 +50,14 @@ public class SaleDetailServiceImpl implements SaleDetailService {
     }
 
     @Override
+    public List<SaleDetailResponse> getDetailsBySaleId(Integer saleId) {
+        log.info("Consultando detalles de la venta #{}", saleId);
+        return saleDetailRepository.findBySaleId(saleId).stream()
+                .map(saleDetailMapper::toResponse)
+                .toList();
+    }
+
+    @Override
     public SaleDetailResponse create(SaleDetailRequest data) {
         log.info("Verificando existencia de la venta para crear detalle de la misma");
         var existingId = saleRepository.findById(data.getIdSale())

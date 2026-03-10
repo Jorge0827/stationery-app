@@ -52,6 +52,14 @@ public class PurchaseDetailServiceImpl implements PurchaseDetailService {
     }
 
     @Override
+    public List<PurchaseDetailResponse> getDetailsByPurchaseId(Integer purchaseId) {
+        log.info("Consultando detalles de la compra #{}", purchaseId);
+        return purchaseDetailRepository.findByPurchaseId(purchaseId).stream()
+                .map(purchaseDetailMapper::toResponse)
+                .toList();
+    }
+
+    @Override
     public PurchaseDetailResponse create(PurchaseDetailRequest data) {
         
         log.info("Verificando existencia de compra para crear detalle de compra");

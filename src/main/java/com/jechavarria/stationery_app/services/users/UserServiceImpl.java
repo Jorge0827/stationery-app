@@ -13,6 +13,7 @@ import com.jechavarria.stationery_app.exceptions.EmailAlreadyExistsException;
 import com.jechavarria.stationery_app.exceptions.IdNotFoundException;
 import com.jechavarria.stationery_app.models.dtos.dtoLogin.LoginRequest;
 import com.jechavarria.stationery_app.models.dtos.dtoLogin.LoginResponse;
+import com.jechavarria.stationery_app.models.dtos.dtoUsers.PublicRegisterRequest;
 import com.jechavarria.stationery_app.models.dtos.dtoUsers.UserRequest;
 import com.jechavarria.stationery_app.models.dtos.dtoUsers.UserResponse;
 import com.jechavarria.stationery_app.models.mappers.UserMapper;
@@ -74,27 +75,42 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
+    public UserResponse publicRegister(PublicRegisterRequest request) {
+        log.debug("Registro público de usuario con rol id={}", request.getIdRol());
+
+        var userRequest = new UserRequest();
+        userRequest.setUserName(request.getUserName());
+        userRequest.setEmail(request.getEmail());
+        userRequest.setPassword(request.getPassword());
+        userRequest.setIdRol(request.getIdRol());
+
+        return createRegister(userRequest);
+    }
+
+    @Override
     public LoginResponse login(LoginRequest credentials) {
 
+        // Ahora usamos el correo electrónico como identificador de login
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 credentials.getUsername(),
                 credentials.getPassword()));
 
         var userDetails = userDetailsService.loadUserByUsername(credentials.getUsername());
-        var userInfo = userRepository.findByUserName(credentials.getUsername());
-        Map<String, Object> claims = Map.of(); 
+        var userInfo = userRepository.findByEmail(credentials.getUsername());
+
+        Map<String, Object> claims = Map.of();
         if (userInfo.isPresent()) {
             claims = Map.<String, Object>of(
-            "name", userInfo.get().getUserName(), 
-            "role", userInfo.get().getRole().getRoleName()); //Lso dos parametros van a ser String y Object
-            
+                    "name", userInfo.get().getUserName(),
+                    "role", userInfo.get().getRole().getRoleName());
         }
-        
-        var token = jwtService.generateToken(claims,userDetails);
+
+        var token = jwtService.generateToken(claims, userDetails);
 
         return LoginResponse.builder()
-        .jwt(token)
-        .build();
+                .jwt(token)
+                .build();
 
         /*
          * if (userRepository.existsByUserNameAndPassword(credentials.getUsername(),

@@ -1,26 +1,26 @@
-### Login correcto
+### Login empleado - jechava01@gmail.com
 POST http://localhost:8081/api/auth/login
 Content-Type: application/json
 
 {
-    "username": "jechavarria27",
+    "username": "jechava01@gmail.com",
     "password": "jjp085401"
 }
 
-### Login correcto
+### Login administrador - admin01@gmail.com
 POST http://localhost:8081/api/auth/login
 Content-Type: application/json
 
 {
-    "username": "adminpapel01",
+    "username": "admin01@gmail.com",
     "password": "admin123"
 }
 
-### Login correcto
+### Login - 08257@gmail.com
 POST http://localhost:8081/api/auth/login
 Content-Type: application/json
 
 {
-    "username": "julovi27",
-    "password": "julovi0000"
+    "username": "08257@gmail.com",
+    "password": "jorge0124"
 }

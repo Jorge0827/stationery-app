@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
@@ -23,6 +24,7 @@ public class SalesRequest {
     @Positive(message = "El id del usuario debe ser un entero positivo")
     private Integer user;
 
-    
+    @Size(max = 500, message = "La nota no puede superar los 500 caracteres")
+    private String notes;
 
 }

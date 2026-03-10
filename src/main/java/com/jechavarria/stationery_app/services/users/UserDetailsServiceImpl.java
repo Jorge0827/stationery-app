@@ -20,18 +20,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     // Objeto de Spring Security
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var userInfo = userRepository.findByUserName(username)
+        // Ahora interpretamos "username" como correo electrónico
+        var userInfo = userRepository.findByEmail(username)
                 .orElseThrow(() -> new IdNotFoundException("El usuario no existe"));
 
         String roleName = userInfo.getRole().getRoleName();
 
-        var response = User.builder()
-                .username(username)
+        return User.builder()
+                .username(userInfo.getEmail())
                 .password(userInfo.getPassword())
                 .roles(roleName)
                 .build();
-
-        return response;
     }
 
 }

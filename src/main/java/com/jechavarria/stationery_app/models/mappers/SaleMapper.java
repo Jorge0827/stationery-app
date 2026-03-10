@@ -18,6 +18,7 @@ public class SaleMapper {
         response.setSalesDate(sale.getSaleDate());
         response.setTotal(sale.getTotal());
         response.setUser(sale.getUser().getUserName());
+        response.setNotes(sale.getNotes());
 
         return response;
     }
@@ -28,7 +29,8 @@ public class SaleMapper {
 
         entity.setSaleDate(saleEntity.getSalesDate());
         entity.setTotal(saleEntity.getTotal());
-        
+        entity.setNotes(saleEntity.getNotes());
+
         var user = new User();
         user.setId(saleEntity.getUser());
 

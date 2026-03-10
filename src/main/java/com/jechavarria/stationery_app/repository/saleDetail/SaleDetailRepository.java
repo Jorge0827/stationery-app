@@ -14,6 +14,8 @@ import com.jechavarria.stationery_app.models.entities.SaleDetail;
 
 public interface SaleDetailRepository extends JpaRepository<SaleDetail, SaleDetailId> {
 
+    List<SaleDetail> findBySaleId(Integer saleId);
+
     interface TopProductProjection {
         String getProductId();
 

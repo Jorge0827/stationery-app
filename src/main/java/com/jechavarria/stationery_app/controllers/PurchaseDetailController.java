@@ -33,7 +33,13 @@ public class PurchaseDetailController {
     @GetMapping
     public ResponseEntity<List<PurchaseDetailResponse>> getAll() {
         var details = purchaseDetailService.getAllDetails();
+        return ResponseEntity.ok(details);
+    }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/byPurchase/{idPurchase}")
+    public ResponseEntity<List<PurchaseDetailResponse>> getByPurchase(@PathVariable Integer idPurchase) {
+        var details = purchaseDetailService.getDetailsByPurchaseId(idPurchase);
         return ResponseEntity.ok(details);
     }
 

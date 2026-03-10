@@ -41,6 +41,9 @@ public class Sale {
     @JoinColumn(name = "id_user", referencedColumnName = "id_user", nullable = false)
     private User user;
 
+    @Column(name = "notes", length = 500)
+    private String notes;
+
     @OneToMany(mappedBy = "sale")
     private List<SaleDetail> saleDetails;
 

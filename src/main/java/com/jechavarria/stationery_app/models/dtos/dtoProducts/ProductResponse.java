@@ -11,7 +11,7 @@ public class ProductResponse {
     private String name;
     private String description;
     private BigDecimal unitPrice;
-    private Integer CurrentStock;
+    private Integer currentStock;
 
 
 }
