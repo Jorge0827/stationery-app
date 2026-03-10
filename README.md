@@ -1,69 +1,96 @@
-## Stationery App - Backend
+# Papel y Magia — Stationery App
 
-Aplicación backend para la gestión de una papelería / negocio físico pequeño.  
-Está construida con **Spring Boot 3**, **Java 21**, **JWT** para autenticación y **PostgreSQL** como base de datos.
-
-### Funcionalidades principales
-
-- **Autenticación y seguridad**
-  - Login con **JWT**.
-  - Configuración de seguridad con **Spring Security**.
-  - Roles de usuario (por ejemplo, `ADMINISTRADOR` y `EMPLEADO`) para proteger endpoints.
-
-- **Gestión de catálogo**
-  - CRUD de **productos**, con precio unitario y stock actual.
-  - CRUD de **proveedores**.
-  - CRUD de **usuarios** y **roles**.
-
-- **Compras**
-  - Registro de compras a proveedores.
-  - Asociación de compras con proveedor y usuario.
-  - Detalle de compras (productos comprados, cantidad, precio).
-  - Consultas por rango de fechas y por proveedor.
-
-- **Ventas**
-  - Registro de ventas realizadas por los empleados.
-  - Detalle de ventas (productos vendidos, cantidad, precio).
-  - Consultas por rango de fechas y por mes.
-  - Reporte de **productos más vendidos** en un rango de fechas.
-
-- **Inventario / stock**
-  - Consulta de productos con **bajo stock** (umbral configurable).
-  - Listado de productos ordenados por stock ascendente para ver rápido qué se está agotando.
-
-- **Documentación**
-  - Integración con **OpenAPI / Swagger UI** para explorar y probar la API desde el navegador.
+Aplicación web fullstack para la gestión de una papelería / negocio físico pequeño.  
+Incluye un **backend REST** con Spring Boot + JWT y un **frontend** en React + Vite + Bootstrap con interfaz profesional.
 
 ---
 
-### Tecnologías
+## Tabla de contenidos
 
-- **Java 21**
-- **Spring Boot 3.5.6**
-  - spring-boot-starter-web
-  - spring-boot-starter-data-jpa
-  - spring-boot-starter-security
-  - spring-boot-starter-validation
-- **JWT (jjwt 0.13.0)**
-- **PostgreSQL** (driver oficial)
-- **Lombok**
-- **springdoc-openapi** para Swagger UI
-- **Maven** como gestor de dependencias
+1. [Tecnologías](#tecnologías)
+2. [Estructura del proyecto](#estructura-del-proyecto)
+3. [Requisitos previos](#requisitos-previos)
+4. [Configuración y arranque](#configuración-y-arranque)
+5. [Funcionalidades](#funcionalidades)
+6. [Endpoints del API](#endpoints-del-api)
+7. [Frontend — módulos](#frontend--módulos)
+8. [Autenticación y roles](#autenticación-y-roles)
+9. [Pruebas manuales con archivos .http](#pruebas-manuales-con-archivos-http)
+10. [Swagger / OpenAPI](#swagger--openapi)
 
 ---
 
-### Requisitos previos
+## Tecnologías
 
-- JDK **21** instalado.
-- **Maven** (opcional si usas el wrapper `mvnw`).
+### Backend
+| Tecnología | Versión |
+|---|---|
+| Java | 21 |
+| Spring Boot | 3.5.6 |
+| Spring Security + JWT (jjwt) | 0.13.0 |
+| Spring Data JPA | — |
+| PostgreSQL | — |
+| Lombok | — |
+| springdoc-openapi (Swagger UI) | — |
+| Maven | — |
+
+### Frontend
+| Tecnología | Versión |
+|---|---|
+| React | 19 |
+| Vite | 7 |
+| TypeScript | — |
+| Bootstrap 5 | — |
+| Bootstrap Icons | — |
+| React Router DOM | 7 |
+
+---
+
+## Estructura del proyecto
+
+```
+stationery-app/
+├── src/                        # Backend Spring Boot
+│   └── main/java/.../
+│       ├── config/             # Spring Security, CORS, JWT filter
+│       ├── controllers/        # Controladores REST
+│       ├── models/
+│       │   ├── dtos/           # Request / Response DTOs
+│       │   ├── entities/       # Entidades JPA
+│       │   └── mappers/        # Conversión entidad <-> DTO
+│       ├── repository/         # Repositorios Spring Data
+│       ├── services/           # Lógica de negocio
+│       ├── globlalExceptions/  # Manejo global de errores
+│       └── security/           # JWT utils, filtros
+├── frontend/                   # Frontend React
+│   ├── src/
+│   │   ├── api/                # Función centralizada apiFetch
+│   │   ├── auth/               # AuthContext (JWT + user info)
+│   │   ├── components/         # AppLayout (sidebar + header)
+│   │   └── pages/              # Una página por módulo
+│   ├── index.html
+│   ├── vite.config.ts
+│   └── package.json
+├── pruebasHttp/                # Archivos .http para pruebas manuales
+└── README.md
+```
+
+---
+
+## Requisitos previos
+
+- **JDK 21** instalado.
+- **Node.js 18+** y **npm** instalados.
+- **Maven** (o usar el wrapper `mvnw` incluido).
 - Una instancia de **PostgreSQL** accesible.
 
 ---
 
-### Configuración de base de datos
+## Configuración y arranque
 
-La configuración de la base de datos se hace en `src/main/resources/application.properties`.  
-Asegúrate de tener la URL, usuario y contraseña correctos para tu entorno, por ejemplo:
+### 1. Base de datos
+
+Crea una base de datos en PostgreSQL y configura la conexión en `src/main/resources/application.properties`:
 
 ```properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/stationery_db
@@ -72,175 +99,240 @@ spring.datasource.password=tu_password
 spring.jpa.hibernate.ddl-auto=update
 ```
 
-Adapta estos valores según tu configuración local.
+> Con `ddl-auto=update` JPA crea o actualiza las tablas automáticamente al arrancar.
 
----
+### 2. Arrancar el backend
 
-### Cómo ejecutar el proyecto
-
-Desde la raíz del proyecto (`stationery-app`):
+Desde la raíz del proyecto:
 
 ```bash
 # Con Maven instalado
 mvn spring-boot:run
 
-# O con el wrapper (Windows PowerShell)
+# O con el wrapper
 ./mvnw spring-boot:run
 ```
 
-Por defecto la aplicación expone la API en:
+El backend queda disponible en: `http://localhost:8081`
 
-- `http://localhost:8081` (según tu configuración actual).
+### 3. Arrancar el frontend
 
----
+```bash
+cd frontend
+npm install      # solo la primera vez
+npm run dev
+```
 
-### Autenticación y seguridad
+El frontend queda disponible en: `http://localhost:5173`
 
-1. **Login**
-   - Endpoint: `POST /api/login`
-   - Envías credenciales de usuario y recibes un **JWT**.
-
-2. **Uso del token**
-   - Debes enviar el token en la cabecera:
-
-   ```http
-   Authorization: Bearer <tu_token_jwt>
-   ```
-
-3. **Roles**
-   - Muchos endpoints están protegidos con:
-     - `@PreAuthorize("isAuthenticated()")` → cualquier usuario logueado.
-     - `@PreAuthorize("hasAnyRole('ADMINISTRADOR', 'EMPLEADO')")`
-     - `@PreAuthorize("hasRole('ADMINISTRADOR')")`
+> **Importante:** el backend debe estar corriendo para que el frontend funcione.
 
 ---
 
-### Endpoints principales (resumen)
+## Funcionalidades
 
-#### Productos (`/api/products`)
+### Autenticación
+- Login con **correo electrónico** y contraseña, devuelve JWT.
+- Registro público de nuevos usuarios con selección de rol.
+- Sesión persistente vía `localStorage` (token + datos del usuario).
 
-- `GET /api/products`
-  - Lista todos los productos.
+### Productos
+- CRUD completo (crear, ver, editar, eliminar).
+- Visualización de stock actual con badge de color (bajo / normal).
+- Búsqueda en tiempo real por nombre o ID.
 
-- `GET /api/products/low-stock?threshold=10`
-  - Devuelve productos con `currentStock <= threshold` (si no se envía, el umbral por defecto es 10).
+### Inventario
+- Listado de productos ordenado de **menor a mayor stock**.
+- Umbral de alerta configurable con slider.
+- Código de colores: Agotado / Bajo stock / Precaución / Suficiente.
 
-- `GET /api/products/by-stock-asc`
-  - Lista todos los productos ordenados por stock ascendente.
+### Ventas
+- Registro de ventas con múltiples líneas de producto.
+- Validación de stock en tiempo real: no permite vender más de lo disponible.
+- Campo de **nota u observación** opcional por venta (ej: "cliente debe $10.000").
+- Historial con filtro por rango de fechas.
+- **Detalles expandibles**: al hacer clic en una venta se despliegan los productos vendidos con cantidad y subtotal.
+- Indicador visual (📌) en ventas que tienen nota.
 
-- `POST /api/products` (ADMINISTRADOR)
-  - Crea un nuevo producto.
+### Compras
+- Registro de compras con proveedor obligatorio y múltiples líneas de producto.
+- Aviso si no hay proveedores registrados.
+- Aviso si el precio de compra es menor al precio de venta del producto.
+- Historial con filtro por rango de fechas.
+- **Detalles expandibles**: al hacer clic en una compra se despliegan los productos comprados.
 
-- `PUT /api/products/{id}` (ADMINISTRADOR)
-  - Actualiza un producto existente (incluye lógica para cambiar ID si es necesario).
+### Proveedores
+- CRUD completo (nombre, prefijo, teléfono, dirección, email, NIT).
+- Búsqueda en tiempo real.
 
-- `DELETE /api/products/{id}` (ADMINISTRADOR)
-  - Elimina un producto.
+### Usuarios
+- CRUD completo con selección de rol (ADMINISTRADOR / EMPLEADO).
+- Acceso restringido a usuarios con rol ADMINISTRADOR.
 
-#### Ventas (`/api/sales`)
+### Reportes
+- Productos más vendidos en un rango de fechas con límite configurable.
+- Visualización con barras de progreso y ranking.
 
-- `GET /api/sales`
-  - Lista todas las ventas.
-
-- `GET /api/sales/by-date?start=YYYY-MM-DD&end=YYYY-MM-DD`
-  - Ventas entre dos fechas (incluyendo ambos días).
-
-- `GET /api/sales/by-month?year=YYYY&month=MM`
-  - Ventas de un mes concreto.
-
-- `GET /api/sales/top-products?start=YYYY-MM-DD&end=YYYY-MM-DD&limit=N`
-  - **Reporte de productos más vendidos** en el rango:
-    - `productId`, `productName`, `totalQuantity`, `totalAmount`.
-    - `limit` es opcional, por defecto se usan 5 productos.
-
-- `POST /api/sales` (ADMINISTRADOR o EMPLEADO)
-  - Crea una nueva venta.
-
-- `PUT /api/sales/{id}` (ADMINISTRADOR)
-  - Actualiza una venta existente.
-
-- `DELETE /api/sales/{id}` (ADMINISTRADOR)
-  - Elimina una venta.
-
-#### Compras (`/api/purchases`)
-
-- `GET /api/purchases`
-  - Lista todas las compras.
-
-- `GET /api/purchases/by-date?start=YYYY-MM-DD&end=YYYY-MM-DD`
-  - Compras entre dos fechas.
-
-- `GET /api/purchases/by-supplier/{supplierId}`
-  - Historial de compras de un proveedor concreto.
-
-- `POST /api/purchases` (ADMINISTRADOR o EMPLEADO)
-  - Crea una nueva compra asociada a proveedor y usuario.
-
-- `PUT /api/purchases/{id}` (ADMINISTRADOR o EMPLEADO)
-  - Actualiza una compra existente.
-
-- `DELETE /api/purchases/{id}` (ADMINISTRADOR)
-  - Elimina una compra.
-
-#### Proveedores (`/api/suppliers`)
-
-- `GET /api/suppliers`
-  - Lista todos los proveedores.
-- `POST /api/suppliers` (ADMINISTRADOR)
-  - Crea proveedor (valida email y NIT únicos).
-- `PUT /api/suppliers/{id}` (ADMINISTRADOR)
-  - Actualiza un proveedor.
-- `DELETE /api/suppliers/{id}` (ADMINISTRADOR)
-  - Elimina un proveedor.
-
-#### Usuarios y roles
-
-- `GET /api/users`, `POST /api/users`, etc.
-- `GET /api/roles`, `POST /api/roles`, etc.
-
-Los controladores y servicios correspondientes gestionan la creación de usuarios, asignación de roles y validaciones de negocio.
+### Dashboard
+- KPIs en tiempo real: total de productos, bajo stock, ventas del día, ingresos del día.
+- Accesos directos a todos los módulos.
+- Alerta si hay productos con bajo stock.
 
 ---
 
-### Pruebas manuales con archivos `.http`
+## Endpoints del API
 
-En la carpeta `pruebasHttp/` tienes varios archivos listos para usar (por ejemplo, con las extensiones de HTTP Client de VS Code / IntelliJ):
+> Todos los endpoints (salvo login, registro público y roles) requieren el header:
+> ```
+> Authorization: Bearer <token_jwt>
+> ```
 
-- `login.http` → para obtener un token JWT.
-- `User.http` → operaciones sobre usuarios.
-- `products.http` → operaciones sobre productos (incluye consultas al nuevo backend).
-- `purchases.http`, `saleDetail.http`, `sales.http`, `suppliers.http`, etc.
+### Autenticación
 
-Ejemplo básico de una petición con token:
+| Método | Endpoint | Acceso | Descripción |
+|--------|----------|--------|-------------|
+| POST | `/api/login` | Público | Login — devuelve JWT |
+| POST | `/api/auth/signup` | Público | Registro de nuevo usuario con rol |
+| POST | `/api/auth/register` | ADMINISTRADOR | Registro de usuario por admin |
+
+### Productos
+
+| Método | Endpoint | Acceso | Descripción |
+|--------|----------|--------|-------------|
+| GET | `/api/products` | Autenticado | Lista todos los productos |
+| GET | `/api/products/{id}` | Autenticado | Obtiene un producto por ID |
+| GET | `/api/products/low-stock?threshold=N` | Autenticado | Productos con stock ≤ umbral |
+| GET | `/api/products/by-stock-asc` | Autenticado | Productos ordenados por stock asc. |
+| POST | `/api/products` | ADMINISTRADOR | Crea un producto |
+| PUT | `/api/products/{id}` | ADMINISTRADOR | Actualiza un producto |
+| DELETE | `/api/products/{id}` | ADMINISTRADOR | Elimina un producto |
+
+### Ventas
+
+| Método | Endpoint | Acceso | Descripción |
+|--------|----------|--------|-------------|
+| GET | `/api/sales` | Autenticado | Lista todas las ventas |
+| GET | `/api/sales/by-date?start=&end=` | Autenticado | Ventas en rango de fechas |
+| GET | `/api/sales/by-month?year=&month=` | Autenticado | Ventas de un mes |
+| GET | `/api/sales/top-products?start=&end=&limit=N` | Autenticado | Productos más vendidos |
+| POST | `/api/sales` | ADMIN / EMPLEADO | Crea una venta |
+| PUT | `/api/sales/{id}` | ADMINISTRADOR | Actualiza una venta |
+| DELETE | `/api/sales/{id}` | ADMINISTRADOR | Elimina una venta |
+
+### Detalle de ventas
+
+| Método | Endpoint | Acceso | Descripción |
+|--------|----------|--------|-------------|
+| GET | `/api/salesDetails` | Autenticado | Lista todos los detalles |
+| GET | `/api/salesDetails/bySale/{idSale}` | Autenticado | Detalles de una venta específica |
+| POST | `/api/salesDetails` | ADMINISTRADOR | Crea un detalle |
+| PUT | `/api/salesDetails/{idSale}/{idProduct}` | ADMINISTRADOR | Actualiza un detalle |
+| DELETE | `/api/salesDetails/{idSale}/{idProduct}` | ADMINISTRADOR | Elimina un detalle |
+
+### Compras
+
+| Método | Endpoint | Acceso | Descripción |
+|--------|----------|--------|-------------|
+| GET | `/api/purchases` | Autenticado | Lista todas las compras |
+| GET | `/api/purchases/by-date?start=&end=` | Autenticado | Compras en rango de fechas |
+| GET | `/api/purchases/by-supplier/{id}` | Autenticado | Compras de un proveedor |
+| POST | `/api/purchases` | ADMIN / EMPLEADO | Crea una compra |
+| PUT | `/api/purchases/{id}` | ADMIN / EMPLEADO | Actualiza una compra |
+| DELETE | `/api/purchases/{id}` | ADMINISTRADOR | Elimina una compra |
+
+### Detalle de compras
+
+| Método | Endpoint | Acceso | Descripción |
+|--------|----------|--------|-------------|
+| GET | `/api/purchasesDetails` | Autenticado | Lista todos los detalles |
+| GET | `/api/purchasesDetails/byPurchase/{id}` | Autenticado | Detalles de una compra específica |
+| POST | `/api/purchasesDetails` | ADMINISTRADOR | Crea un detalle |
+| PUT | `/api/purchasesDetails/{idPurchase}/{idProduct}` | ADMINISTRADOR | Actualiza un detalle |
+| DELETE | `/api/purchasesDetails/{idPurchase}/{idProduct}` | ADMINISTRADOR | Elimina un detalle |
+
+### Proveedores
+
+| Método | Endpoint | Acceso | Descripción |
+|--------|----------|--------|-------------|
+| GET | `/api/suppliers` | Autenticado | Lista todos los proveedores |
+| POST | `/api/suppliers` | ADMINISTRADOR | Crea un proveedor |
+| PUT | `/api/suppliers/{id}` | ADMINISTRADOR | Actualiza un proveedor |
+| DELETE | `/api/suppliers/{id}` | ADMINISTRADOR | Elimina un proveedor |
+
+### Usuarios y roles
+
+| Método | Endpoint | Acceso | Descripción |
+|--------|----------|--------|-------------|
+| GET | `/api/users` | Autenticado | Lista todos los usuarios |
+| PUT | `/api/users/{id}` | ADMINISTRADOR | Actualiza un usuario |
+| DELETE | `/api/users/{id}` | ADMINISTRADOR | Elimina un usuario |
+| GET | `/api/roles` | Público | Lista todos los roles |
+
+---
+
+## Frontend — módulos
+
+| Ruta | Página | Descripción |
+|------|--------|-------------|
+| `/login` | Login | Inicio de sesión con email |
+| `/signup` | Registro | Registro público con selección de rol |
+| `/` | Dashboard | KPIs, accesos rápidos, alertas de stock |
+| `/products` | Productos | CRUD completo de productos |
+| `/inventory` | Inventario | Stock ordenado con alertas visuales |
+| `/sales` | Ventas | Historial, registro y detalles expandibles |
+| `/purchases` | Compras | Historial, registro y detalles expandibles |
+| `/suppliers` | Proveedores | CRUD completo de proveedores |
+| `/users` | Usuarios | CRUD completo de usuarios (solo admin) |
+| `/reports` | Reportes | Productos más vendidos con gráfica |
+
+---
+
+## Autenticación y roles
+
+El sistema maneja dos roles:
+
+| Rol | Permisos |
+|-----|----------|
+| `ADMINISTRADOR` | Acceso completo: crear, editar, eliminar en todos los módulos |
+| `EMPLEADO` | Solo lectura y registro de ventas/compras; sin acceso a CRUD de catálogo |
+
+Los botones de acción (Crear, Editar, Eliminar) se ocultan automáticamente en el frontend para usuarios con rol `EMPLEADO`.
+
+---
+
+## Pruebas manuales con archivos .http
+
+En la carpeta `pruebasHttp/` hay archivos listos para usar con el cliente HTTP de VS Code / IntelliJ:
+
+- `login.http` → obtener token JWT
+- `User.http` → operaciones sobre usuarios
+- `products.http` → operaciones sobre productos
+- `purchases.http`, `sales.http`, `suppliers.http`, etc.
+
+Ejemplo:
 
 ```http
-### Listar productos
+### Login
+POST http://localhost:8081/api/login
+Content-Type: application/json
+
+{
+  "username": "correo@ejemplo.com",
+  "password": "tu_contraseña"
+}
+
+### Listar productos (con token)
 GET http://localhost:8081/api/products
 Authorization: Bearer {{token}}
 Accept: application/json
 ```
 
-Actualiza la variable `{{token}}` o pega directamente tu JWT válido.
-
 ---
 
-### Swagger / OpenAPI
+## Swagger / OpenAPI
 
-Cuando la aplicación está en marcha, puedes acceder a la documentación interactiva de la API en:
+Con el backend en marcha, la documentación interactiva está disponible en:
 
-- `http://localhost:8081/swagger-ui.html`
-  o
 - `http://localhost:8081/swagger-ui/index.html`
 
-Ahí puedes probar endpoints, ver modelos de datos y respuestas.
-
----
-
-### Futuras mejoras interesantes
-
-- Reportes adicionales (por cliente, por forma de pago, comparativas mes a mes).
-- Manejo de devoluciones / notas de crédito.
-- Integración con un sistema contable o una app móvil.
-
-Este README resume la estructura actual del proyecto y los endpoints clave para operar la papelería de forma cómoda desde un cliente frontend o herramientas como Postman / HTTP Client.
-
+Permite explorar y probar todos los endpoints directamente desde el navegador.
